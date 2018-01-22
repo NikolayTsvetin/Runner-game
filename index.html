@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Improve runner</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="icon" type="image/x-icon" href="imgs/improve.png">
+</head>
+
+<body>
+    <h2 id="score"></h2>
+    <h1 id="level"></h1>
+    <div id="game-over"></div>
+    <canvas id="player-canvas"></canvas>
+    <canvas id="trip-canvas"></canvas>
+    <canvas id="background-canvas"></canvas>
+    <img class="sprite-image" src="./imgs/running-character.png" id="character-sprite" />
+    <img class="sprite-image" src="./imgs/trip.png" id="trip" />
+    <img class="sprite-image" src="./imgs/background-image3.png" id="background" />
+    <audio src="./game-over.mp3" hidden id="audio" />
+    <script src="./js/sprite.js"></script>
+    <script src="./js/physical-body.js"></script>
+    <script src="./js/background.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+canvas {
+    border: 1px solid black;
+    position: absolute;
+}
+
+#player-canvas {
+    z-index: 10;
+}
+
+#trip-canvas {
+    z-index: 5;
+}
+
+#background-canvas {
+    z-index: 1;
+}
+
+.sprite-image {
+    display: none;
+}
+
+h2 {
+    z-index: 15;
+    position: absolute;
+    color: white;
+    padding-left: 10px;
+}
+
+h1 {
+    z-index: 15;
+    position: absolute;
+    color: white;
+    left: 32%;
+    text-align: center;
+}
+
+#game-over {
+    display: none;
+    background: black;
+    width: 968px;
+    height: 484px;
+    z-index: 20;
+    opacity: 0.5;
+}
