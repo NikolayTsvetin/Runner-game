@@ -1,58 +1,23 @@
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
     'use strict';
 
-    function applyGravityVertical(physicalBody, gravity) {
+    const WIDTH = 968;
+    const HEIGHT = WIDTH / 2;
+    let counter = 0;
+    const score = document.getElementById('score');
+    const gameOver = document.getElementById('game-over');
+    let levelCounter = 1;
+    const level = document.getElementById('level');
 
-        if (physicalBody.coordinates.y === (HEIGHT - physicalBody.height)) {
-            return;
-        }
-
-        if (physicalBody.coordinates.y >= (HEIGHT - physicalBody.height)) {
-            physicalBody.coordinates.y = HEIGHT - physicalBody.height;
-            physicalBody.speed.y = 0;
-            return;
-        }
-
-        physicalBody.speed.y += gravity;
-    }
-
-    function dontEscapeTheMap(physicalBody) {
-        if (physicalBody.coordinates.x === (WIDTH - physicalBody.width)) {
-            return;
-        }
-
-        if (physicalBody.coordinates.x > (WIDTH - physicalBody.width)) {
-            physicalBody.coordinates.x = WIDTH - physicalBody.width - 1;
-            return;
-        }
-
-        if (physicalBody.coordinates.x === (0 + physicalBody.width)) {
-            return;
-        }
-
-        if (physicalBody.coordinates.x <= 0) {
-            physicalBody.coordinates.x = 1;
-            return;
-        }
-    }
-
-    var WIDTH = 968,
-        HEIGHT = WIDTH / 2,
-        counter = 0,
-        score = document.getElementById('score'),
-        gameOver = document.getElementById('game-over'),
-        levelCounter = 1,
-        level = document.getElementById('level');
-
-    var playerCanvas = document.getElementById('player-canvas'),
-        playerContext = playerCanvas.getContext('2d'),
-        playerImg = document.getElementById('character-sprite');
+    const playerCanvas = document.getElementById('player-canvas');
+    const playerContext = playerCanvas.getContext('2d');
+    const playerImg = document.getElementById('character-sprite');
 
     playerCanvas.width = WIDTH;
     playerCanvas.height = HEIGHT;
 
     // try with ball as a character
-    var characterSprite = createSprite({
+    const characterSprite = createSprite({
         spritesheet: playerImg,
         context: playerContext,
         width: playerImg.width / 8,
@@ -61,7 +26,7 @@ window.addEventListener('load', function () {
         loopTicksPerFrame: 5
     });
 
-    var characterBody = createPhysicalBody({
+    const characterBody = createPhysicalBody({
         defaultAcceleration: { x: 5, y: 15 },
         coordinates: { x: 0, y: (HEIGHT - characterSprite.height) },
         speed: { x: 0, y: 0 },
@@ -69,7 +34,45 @@ window.addEventListener('load', function () {
         width: characterSprite.width
     });
 
-    window.addEventListener('keydown', function (e) {
+    function applyGravityVertical(physicalBody, gravity) {
+
+        if (physicalBody.coordinates.y === HEIGHT - physicalBody.height) {
+            return;
+        }
+
+        if (physicalBody.coordinates.y >= HEIGHT - physicalBody.height) {
+            physicalBody.coordinates.y = HEIGHT - physicalBody.height;
+            physicalBody.speed.y = 0;
+
+            return;
+        }
+
+        physicalBody.speed.y += gravity;
+    }
+
+    function dontEscapeTheMap(physicalBody) {
+        if (physicalBody.coordinates.x === WIDTH - physicalBody.width) {
+            return;
+        }
+
+        if (physicalBody.coordinates.x > WIDTH - physicalBody.width) {
+            physicalBody.coordinates.x = WIDTH - physicalBody.width - 1;
+
+            return;
+        }
+
+        if (physicalBody.coordinates.x === 0 + physicalBody.width) {
+            return;
+        }
+
+        if (physicalBody.coordinates.x <= 0) {
+            physicalBody.coordinates.x = 1;
+
+            return;
+        }
+    }
+
+    window.addEventListener('keydown', (e) => {
         switch (e.keyCode) {
             case 65:
             case 37:
@@ -104,23 +107,24 @@ window.addEventListener('load', function () {
         }
     });
 
-    window.addEventListener('keyup', function (e) {
+    window.addEventListener('keyup', (e) => {
         // check for the right keyup
-        if ((e.keyCode !== 37) && (e.keyCode !== 39) && (e.keyCode !== 68) && (e.keyCode !== 65)) {
+        if (e.keyCode !== 37 && e.keyCode !== 39 &&
+            e.keyCode !== 68 && e.keyCode !== 65) {
             return;
         }
         characterBody.speed.x = 0;
     });
 
-    var tripCanvas = document.getElementById('trip-canvas'),
-        tripContext = tripCanvas.getContext('2d'),
-        tripImg = document.getElementById('trip');
+    const tripCanvas = document.getElementById('trip-canvas');
+    const tripContext = tripCanvas.getContext('2d');
+    const tripImg = document.getElementById('trip');
 
     tripCanvas.width = WIDTH;
     tripCanvas.height = HEIGHT;
 
     function createTrip(offsetX) {
-        var tripSprite = createSprite({
+        const tripSprite = createSprite({
             spritesheet: tripImg,
             context: tripContext,
             width: tripImg.width / 36,
@@ -129,7 +133,7 @@ window.addEventListener('load', function () {
             loopTicksPerFrame: 5
         });
 
-        var tripBody = createPhysicalBody({
+        const tripBody = createPhysicalBody({
             coordinates: { x: offsetX, y: (HEIGHT - tripSprite.height) },
             speed: { x: -7, y: 0 },
             width: tripSprite.width,
@@ -142,27 +146,28 @@ window.addEventListener('load', function () {
         };
     }
 
-    var trips = [];
+    const trips = [];
 
     function spawnTrip() {
-        var spawnOffsetX = 120,
-            spawnChance = 0.02;
+        const spawnOffsetX = 120;
+        const spawnChance = 0.02;
+
         if (Math.random() < spawnChance) {
             if (trips.length) {
-                var lastTrip = trips[trips.length - 1];
-                var starting = Math.max(lastTrip.body.coordinates.x + lastTrip.body.width + spawnOffsetX, WIDTH);
-                var newTrip = createTrip(starting);
+                const lastTrip = trips[trips.length - 1];
+                const starting = Math.max(lastTrip.body.coordinates.x +
+                    lastTrip.body.width + spawnOffsetX, WIDTH);
+                const newTrip = createTrip(starting);
 
                 trips.push(newTrip);
                 // wtf
-            }
-            else {
+            } else {
                 trips.push(createTrip(WIDTH));
             }
         }
     }
 
-    var background = createBackground({
+    const background = createBackground({
         width: WIDTH,
         height: HEIGHT,
         speedX: 5
@@ -172,13 +177,14 @@ window.addEventListener('load', function () {
         applyGravityVertical(characterBody, 0.6);
         dontEscapeTheMap(characterBody);
 
-        var lastCharacterCoordinates = characterBody.move();
+        const lastCharacterCoordinates = characterBody.move();
 
-        characterSprite.render(characterBody.coordinates, lastCharacterCoordinates);
+        characterSprite
+            .render(characterBody.coordinates, lastCharacterCoordinates);
         characterSprite.update();
 
-        for (var i = 0; i < trips.length; i += 1) {
-            var trip = trips[i];
+        for (let i = 0; i < trips.length; i += 1) {
+            const trip = trips[i];
 
             if (counter < 25) {
                 level.innerText = 'Level: ' + levelCounter;
@@ -233,16 +239,17 @@ window.addEventListener('load', function () {
                 // not really sure - maybe without continue its the same
             }
 
-            var lastTripCoordinates = trip.body.move();
+            const lastTripCoordinates = trip.body.move();
 
             trip.sprite.render(trip.body.coordinates, lastTripCoordinates);
             trip.sprite.update();
 
             if (characterBody.collidesWith(trip.body)) {
-                var endingSong = document.getElementById('audio');
+                const endingSong = document.getElementById('audio');
+
                 endingSong.play();
 
-                setTimeout(function () {
+                setTimeout(() => {
                     gameOver.style.position = 'absolute';
                     gameOver.style.display = 'block';
                     score.style.zIndex = 25;

@@ -1,7 +1,7 @@
 function createBackground(options) {
-    var backgroundCanvas = document.getElementById('background-canvas'),
-        backgroundContext = backgroundCanvas.getContext('2d'),
-        backgroundImg = document.getElementById('background');
+    const backgroundCanvas = document.getElementById('background-canvas');
+    const backgroundContext = backgroundCanvas.getContext('2d');
+    const backgroundImg = document.getElementById('background');
 
     backgroundCanvas.height = options.height;
     backgroundCanvas.width = options.width;
@@ -28,12 +28,12 @@ function createBackground(options) {
         }
     }
 
-    var background = {
+    const background = {
         image: backgroundImg,
         speedX: options.speedX,
         coordinates: { x: 0, y: 0 },
-        render: render,
-        update: update
+        render,
+        update
     };
 
     return background;

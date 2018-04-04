@@ -1,16 +1,16 @@
 function createSprite(options) {
 
     // I think this is not needed
-    var clearOffset = 5;
+    const clearOffset = 5;
 
     function render(drawCoordinates, clearCoordinates) {
 
-        //this.context.clearRect(
+        // this.context.clearRect(
         //    clearCoordinates.x,
         //    clearCoordinates.y,
         //    this.width,
         //    this.height
-        //);
+        // );
         this.context.clearRect(
             clearCoordinates.x - clearOffset,
             clearCoordinates.y - clearOffset,
@@ -48,7 +48,7 @@ function createSprite(options) {
 
     }
 
-    var sprite = {
+    const sprite = {
         spritesheet: options.spritesheet,
         context: options.context,
         width: options.width,
@@ -57,8 +57,8 @@ function createSprite(options) {
         loopTicksPerFrame: options.loopTicksPerFrame,
         frameIndex: 0,
         loopTicksCount: 0,
-        render: render,
-        update: update
+        render,
+        update
     };
 
     return sprite;
